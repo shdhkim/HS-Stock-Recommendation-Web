@@ -19,11 +19,12 @@ public class CommentService {
 
     @Autowired
     private PostRepository postRepository;
-
+    @Transactional
     public List<Comment> getCommentsByPostId(Long postId) {
         Post post = postRepository.findById(postId).orElseThrow();
         return post.getComments();
     }
+    @Transactional
     public List<CommentDto> getCommentsByUsername(String username) {
         List<Comment> comments = commentRepository.findByUsername(username);
         return comments.stream().map(this::convertToDto).collect(Collectors.toList());
@@ -36,6 +37,7 @@ public class CommentService {
         commentDto.setCreatedAt(comment.getCreatedAt());
         return commentDto;
     }
+    @Transactional
     public Comment createComment(Long postId, Comment comment) { //댓글 작성
         Post post = postRepository.findById(postId).orElseThrow();
         comment.setPost(post);
