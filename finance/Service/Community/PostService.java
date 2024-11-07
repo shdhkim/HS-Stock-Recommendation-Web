@@ -16,17 +16,17 @@ import java.util.stream.Collectors;
 public class PostService {
     @Autowired
     private PostRepository postRepository;
-
+    @Transactional
     public List<PostDto> getAllPosts() {
         List<Post> posts = postRepository.findAll();
         return posts.stream().map(this::convertToDto).collect(Collectors.toList());
     }
-
+    @Transactional
     public PostDto getPostById(Long id) {
         Post post = postRepository.findById(id).orElseThrow(() -> new RuntimeException("Post not found"));
         return convertToDto(post);
     }
-
+    @Transactional
     public Post createPost(Post post) {
         return postRepository.save(post);
     }
@@ -81,6 +81,7 @@ public class PostService {
         post.setLikeCount(post.getLikeCount() + 1);
         postRepository.save(post);
     }
+    @Transactional
     public List<PostDto> getPostsByUsername(String username) {
         List<Post> posts = postRepository.findByUsername(username);
         return posts.stream().map(this::convertToDto).collect(Collectors.toList());
